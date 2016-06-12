@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>example</title>
+
+        <link href="../dist/css/package.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div id="app"></div>
+
+        <script src="../node_modules/react/dist/react.js"></script>
+        <script src="../node_modules/react-dom/dist/react-dom.js"></script>
+        <script src="../dist/js/package.js"></script>
+        <script>
+            ReactDOM.render(
+                React.createElement(PackageName, null),
+                document.getElementById('app')
+            );
+        </script>
+    </body>
+</html>
