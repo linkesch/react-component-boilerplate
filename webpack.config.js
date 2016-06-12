@@ -6,16 +6,14 @@ module.exports = {
                 exclude: /node_modules/,
                 loader: 'babel-loader',
                 query: {
-                    cacheDirectory: true,
-                    presets: ['react', 'es2015', 'stage-2']
+                    cacheDirectory: true
                 }
             }
         ]
     },
     output: {
         libraryTarget: 'umd',
-        library: 'PackageName',
-        filename: 'package.js'
+        library: 'PackageName'
     },
     externals: [
         {

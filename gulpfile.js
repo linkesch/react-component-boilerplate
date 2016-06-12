@@ -7,25 +7,26 @@ var manifest = require('./package.json');
 var Server = require('karma').Server;
 var webpack = require('webpack-stream');
 var livereload = require('gulp-livereload');
+var babel = require('gulp-babel');
 
 // Load all of our Gulp plugins
 var $ = loadPlugins();
 
 // Gather the library data from `package.json`
 var mainFile = manifest.main;
-var destinationFolder = path.join(path.dirname(mainFile), '..');
-var exportFileName = path.basename(mainFile, path.extname(mainFile));
+var destinationFolder = 'dist';
+var exportFileName = manifest.name;
 
 function cleanDistJs(done) {
     del([path.join(destinationFolder, 'js')]).then(function () { done(); });
 }
 
-function cleanDistCss(done) {
-    del([path.join(destinationFolder, 'css')]).then(function () { done(); });
+function cleanLib(done) {
+    del(['lib']).then(function () { done(); });
 }
 
-function cleanTmp(done) {
-    del(['tmp']).then(function () { done(); });
+function cleanDistCss(done) {
+    del([path.join(destinationFolder, 'css')]).then(function () { done(); });
 }
 
 // Lint a set of files
@@ -57,9 +58,10 @@ function karma(done) {
     }).start();
 }
 
-function build() {
+function buildDist() {
     return gulp.src(path.join('src/js/index.js'))
         .pipe(webpack(require('./webpack.config.js')))
+        .pipe($.rename(exportFileName + '.js'))
         .pipe(gulp.dest(path.join(destinationFolder, 'js')))
         .pipe($.rename(exportFileName + '.min.js'))
         .pipe($.sourcemaps.init({ loadMaps: true }))
@@ -67,6 +69,12 @@ function build() {
         .pipe($.sourcemaps.write('./'))
         .pipe(gulp.dest(path.join(destinationFolder, 'js')))
         .pipe(livereload());
+}
+
+function buildLib() {
+    return gulp.src('src/js/**/*.js')
+        .pipe(babel())
+        .pipe(gulp.dest('lib'));
 }
 
 var watchFiles = ['src/js/*', 'package.json', '**/.eslintrc', '.jscsrc'];
@@ -81,6 +89,7 @@ function css() {
     return gulp.src(path.join('src/sass', '*.scss'))
         .pipe(sass().on('error', sass.logError))
         .pipe($.sourcemaps.init({ loadMaps: true }))
+        .pipe($.rename(exportFileName + '.css'))
         .pipe(gulp.dest(path.join(destinationFolder, 'css')))
         .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
         .pipe($.rename(exportFileName + '.min.css'))
@@ -91,9 +100,9 @@ function css() {
 
 // Remove the built files
 gulp.task('clean', ['clean-js', 'clean-css']);
-gulp.task('clean-js', cleanDistJs);
+gulp.task('clean-lib', cleanLib);
+gulp.task('clean-js', ['clean-lib'], cleanDistJs);
 gulp.task('clean-css', cleanDistCss);
-gulp.task('clean-tmp', cleanTmp);
 
 // Lint our source code
 gulp.task('lint-src', lintSrc);
@@ -105,7 +114,8 @@ gulp.task('karma', karma);
 gulp.task('test', ['lint', 'karma']);
 
 // Build JS
-gulp.task('js', ['test', 'clean-js'], build);
+gulp.task('lib', ['test', 'clean-js'], buildLib);
+gulp.task('js', ['lib'], buildDist);
 
 // Build CSS
 gulp.task('css', ['clean-css'], css);

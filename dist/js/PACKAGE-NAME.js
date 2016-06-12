@@ -103,6 +103,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    exports.default = PackageName;
 
 	    module.exports = PackageName;
+	    module.exports = exports['default'];
 	});
 
 /***/ },
@@ -117,17 +118,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [module, exports, __webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	    } else if (typeof exports !== "undefined") {
-	        factory(exports, require('react'));
+	        factory(module, exports, require('react'));
 	    } else {
 	        var mod = {
 	            exports: {}
 	        };
-	        factory(mod.exports, global.react);
+	        factory(mod, mod.exports, global.react);
 	        global.Component = mod.exports;
 	    }
-	})(this, function (exports, _react) {
+	})(this, function (module, exports, _react) {
 	    'use strict';
 
 	    Object.defineProperty(exports, "__esModule", {
@@ -149,6 +150,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            props.children
 	        );
 	    };
+
+	    module.exports = exports['default'];
 	});
 
 /***/ }
